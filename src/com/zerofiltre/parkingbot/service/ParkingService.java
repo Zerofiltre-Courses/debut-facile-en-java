@@ -14,6 +14,4 @@ public class ParkingService {
     return ticket;
   }
 
-
-
 }

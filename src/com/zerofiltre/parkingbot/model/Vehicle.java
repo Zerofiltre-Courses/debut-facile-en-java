@@ -12,8 +12,4 @@ public class Vehicle {
     this.registrationNumber = registrationNumber;
   }
 
-  public String getCategory() {
-    return "VEHICLE";
-  }
-
 }
