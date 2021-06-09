@@ -1,4 +1,4 @@
-package com.zerofiltre.parkingbot;
+package com.zerofiltre.parkingbot.service;
 
 import com.zerofiltre.parkingbot.model.Ticket;
 import com.zerofiltre.parkingbot.model.Vehicle;
