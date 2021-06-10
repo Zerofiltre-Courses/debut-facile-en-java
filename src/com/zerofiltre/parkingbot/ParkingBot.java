@@ -34,6 +34,10 @@ public class ParkingBot {
     bicycle.setRegistrationNumber("BX-256-QX");
     Ticket carTicket = parkingService.processIncomingVehicle(car);
     System.out.println(carTicket);
+
+    System.out.println(parkingService.processExitingVehicle(vehicleTicket));
+    System.out.println(parkingService.processExitingVehicle(bicycleTicket));
+    System.out.println(parkingService.processExitingVehicle(carTicket));
   }
 
 }
