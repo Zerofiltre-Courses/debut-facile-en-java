@@ -16,4 +16,10 @@ public class Vehicle {
     return "VEHICLE";
   }
 
+  @Override
+  public String toString() {
+    return "Vehicle{" +
+        "registrationNumber='" + registrationNumber + '\'' +
+        '}';
+  }
 }
