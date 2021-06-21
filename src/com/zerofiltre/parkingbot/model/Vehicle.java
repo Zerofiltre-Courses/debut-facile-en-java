@@ -4,6 +4,8 @@ public class Vehicle {
 
   private String registrationNumber;
 
+  private String parkingSpotNumber;
+
   public String getRegistrationNumber() {
     return registrationNumber;
   }
@@ -16,10 +18,11 @@ public class Vehicle {
     return "VEHICLE";
   }
 
-  @Override
-  public String toString() {
-    return "Vehicle{" +
-        "registrationNumber='" + registrationNumber + '\'' +
-        '}';
+  public String getParkingSpotNumber() {
+    return parkingSpotNumber;
+  }
+
+  public void setParkingSpotNumber(String parkingSpotNumber) {
+    this.parkingSpotNumber = parkingSpotNumber;
   }
 }

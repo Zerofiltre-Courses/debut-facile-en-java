@@ -1,8 +1,10 @@
 package com.zerofiltre.parkingbot.service;
 
+import com.zerofiltre.parkingbot.model.Parking;
+import com.zerofiltre.parkingbot.model.ParkingTypeEnum;
 import com.zerofiltre.parkingbot.model.Ticket;
 import com.zerofiltre.parkingbot.model.Vehicle;
-import java.util.Calendar;
+import java.security.SecureRandom;
 import java.util.Date;
 
 public class ParkingService {
@@ -45,5 +47,34 @@ public class ParkingService {
 
   }
 
+  public Parking initParking() {
+    Parking building = new Parking();
+    building.setType(ParkingTypeEnum.BUILDING);
+    building.setNumber(1);
+    for (int i = 0; i < 50; i++) {
+      Parking floor = new Parking();
+      floor.setType(ParkingTypeEnum.FLOOR);
+      floor.setNumber(i);
 
+      for (int j = 1; j <= 30; j++) {
+        Parking hall = new Parking();
+        hall.setType(ParkingTypeEnum.HALL);
+        hall.setNumber(j);
+        for (int k = 1; k <= 20; k++) {
+          Parking spot = new Parking();
+          spot.setType(ParkingTypeEnum.SPOT);
+          spot.setNumber(k);
+          Vehicle vehicle = new Vehicle();
+          vehicle.setRegistrationNumber(String.valueOf(new SecureRandom().nextInt(10000)));
+          vehicle.setParkingSpotNumber("");
+          vehicle.setParkingSpotNumber("1-" + i + "-" + j + "-" + k);
+          spot.setVehicle(vehicle);
+          hall.getSubParkings().add(spot);
+        }
+        floor.getSubParkings().add(hall);
+      }
+      building.getSubParkings().add(floor);
+    }
+    return building;
+  }
 }
