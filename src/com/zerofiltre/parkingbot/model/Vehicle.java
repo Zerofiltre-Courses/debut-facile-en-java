@@ -6,6 +6,8 @@ public class Vehicle {
 
   private String parkingSpotNumber;
 
+  private VehiculeCategoryEnum category;
+
   public String getRegistrationNumber() {
     return registrationNumber;
   }
@@ -14,8 +16,8 @@ public class Vehicle {
     this.registrationNumber = registrationNumber;
   }
 
-  public String getCategory() {
-    return "VEHICLE";
+  public VehiculeCategoryEnum getCategory() {
+    return VehiculeCategoryEnum.VEHICULE;
   }
 
   public String getParkingSpotNumber() {

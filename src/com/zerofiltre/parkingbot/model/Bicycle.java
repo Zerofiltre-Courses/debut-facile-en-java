@@ -1,10 +1,12 @@
 package com.zerofiltre.parkingbot.model;
 
-public class Bicycle extends Vehicle{
+import static com.zerofiltre.parkingbot.model.VehiculeCategoryEnum.BICYCLE;
+
+public class Bicycle extends Vehicle {
 
   @Override
-  public String getCategory() {
-    return "2 ROUES";
+  public VehiculeCategoryEnum getCategory() {
+    return BICYCLE;
   }
 
 }

@@ -1,9 +1,13 @@
 package com.zerofiltre.parkingbot.service;
 
+import static com.zerofiltre.parkingbot.model.VehiculeCategoryEnum.BICYCLE;
+import static com.zerofiltre.parkingbot.model.VehiculeCategoryEnum.CITADINE;
+
 import com.zerofiltre.parkingbot.model.Parking;
 import com.zerofiltre.parkingbot.model.ParkingTypeEnum;
 import com.zerofiltre.parkingbot.model.Ticket;
 import com.zerofiltre.parkingbot.model.Vehicle;
+import com.zerofiltre.parkingbot.model.VehiculeCategoryEnum;
 import java.security.SecureRandom;
 import java.util.Date;
 
@@ -25,7 +29,7 @@ public class ParkingService {
     ticket.setExitTime(exitTime);
 
     Vehicle vehicle = ticket.getVehicle();
-    String category = vehicle.getCategory();
+    VehiculeCategoryEnum category = vehicle.getCategory();
 
     double pricePerMinForCitadine = 0.08;
     double pricePerMinFor2Roues = 0.02;
@@ -34,9 +38,9 @@ public class ParkingService {
 
     double finalPrice = 0;
 
-    if ("CITADINE".equals(category)) {
+    if (CITADINE.equals(category)) {
       finalPrice = durationInMinutes * pricePerMinForCitadine;
-    } else if ("2 ROUES".equals(category)) {
+    } else if (BICYCLE.equals(category)) {
       finalPrice = durationInMinutes * pricePerMinFor2Roues;
     } else {
       finalPrice = durationInMinutes * defaultPricePerMin;
