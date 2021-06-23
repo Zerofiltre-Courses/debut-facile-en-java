@@ -21,12 +21,7 @@ public class ParkingBot {
    */
   public static void main(String[] args) {
 
-    printer = new Printer() {
-      @Override
-      public void print(Object o) {
-        System.out.println(o);
-      }
-    };
+    printer = o -> System.out.println(o);
 
     processVehicles();
   }
