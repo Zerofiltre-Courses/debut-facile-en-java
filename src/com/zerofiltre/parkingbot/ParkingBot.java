@@ -5,14 +5,12 @@ import com.zerofiltre.parkingbot.model.Car;
 import com.zerofiltre.parkingbot.model.Ticket;
 import com.zerofiltre.parkingbot.model.Vehicle;
 import com.zerofiltre.parkingbot.service.ParkingService;
-import com.zerofiltre.parkingbot.util.Printer;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ParkingBot {
 
   static ParkingService parkingService = new ParkingService();
-  static Printer printer;
 
   /**
    * Ceci est la méthode Main
@@ -20,9 +18,6 @@ public class ParkingBot {
    * @param args : Tableau de données entrées lors du lancement de l'application
    */
   public static void main(String[] args) {
-
-    printer = o -> System.out.println(o);
-
     processVehicles();
   }
 
@@ -32,31 +27,30 @@ public class ParkingBot {
     Vehicle vehicle = new Vehicle();
     vehicle.setRegistrationNumber("LS-324-PM");
     Ticket vehicleTicket = parkingService.processIncomingVehicle(vehicle);
-    printer.print(vehicleTicket);
+    System.out.println(vehicleTicket);
     tickets.add(vehicleTicket);
 
     Vehicle bicycle = new Bicycle();
     bicycle.setRegistrationNumber("PM-254-OP");
     Ticket bicycleTicket = parkingService.processIncomingVehicle(bicycle);
-    printer.print(bicycleTicket);
+    System.out.println(bicycleTicket);
     tickets.add(bicycleTicket);
 
     Vehicle car = new Car();
     bicycle.setRegistrationNumber("BX-256-QX");
     Ticket carTicket = parkingService.processIncomingVehicle(car);
-    printer.print(carTicket);
+    System.out.println(carTicket);
     tickets.add(carTicket);
 
     System.out.println("Début du traitement de sorties en lot de " + tickets.size() + " véhicules");
     for (int i = 0; i < tickets.size(); i++) {
       try {
-        printer.print(parkingService.processExitingVehicle(tickets.get(i)));
+        System.out.println(parkingService.processExitingVehicle(tickets.get(i)));
       } catch (Exception e) {
-        printer.print("Une erreur est survenue lors de la sortie d'un ou plusieurs véhicules");
+        System.out.println("Une erreur est survenue lors de la sortie d'un ou plusieurs véhicules");
       }
     }
-    printer.print("Fin du traitement des sorties par lot");
-
+    System.out.println("Fin du traitement des sorties par lot");
 
   }
 
