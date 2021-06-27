@@ -1,4 +1,4 @@
-package com.zerofiltre.parkingbot.service.service;
+package com.zerofiltre.parkingbot.service;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
