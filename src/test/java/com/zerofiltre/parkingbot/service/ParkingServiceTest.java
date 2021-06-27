@@ -14,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.Timeout;
 
 @TestInstance(Lifecycle.PER_CLASS)
 public class ParkingServiceTest {
@@ -28,7 +29,6 @@ public class ParkingServiceTest {
   private Date enteringTime;
 
 
-
   @BeforeAll
   void init() {
     // Soit un véhicule a l'entrée du parking avec une plaque d'immatriculation X
@@ -40,7 +40,7 @@ public class ParkingServiceTest {
   }
 
   @BeforeEach
-  void reInit(){
+  void reInit() {
     Date now = new Date();
     long nowMinus1Hour = now.getTime() - 60 * 60 * 1000;
     enteringTime = new Date(nowMinus1Hour);
@@ -48,12 +48,12 @@ public class ParkingServiceTest {
   }
 
   @AfterEach
-  void afterEach(){
+  void afterEach() {
     System.out.println("Je m'affiche après chaque test");
   }
 
   @AfterAll
-  void afterAll(){
+  void afterAll() {
     System.out.println("Je m'affiche après tous les tests");
 
   }
@@ -143,11 +143,16 @@ public class ParkingServiceTest {
     assertThat(exitCarTicket).isNotNull();
     assertThat(exitBicycleTicket).isNotNull();
 
-
     assertThat(exitVehicleTicket.getAmount()).isEqualTo(3);
     assertThat(exitCarTicket.getAmount()).isEqualTo(4.8);
     assertThat(exitBicycleTicket.getAmount()).isEqualTo(1.2);
 
+  }
+
+  @Timeout(2)
+  @Test
+  void failIfMoreThan2Seconds() throws InterruptedException {
+    Thread.sleep(3 * 1000);
   }
 
 
