@@ -14,7 +14,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
-import org.junit.jupiter.api.Timeout;
 
 @TestInstance(Lifecycle.PER_CLASS)
 public class ParkingServiceTest {
@@ -147,12 +146,6 @@ public class ParkingServiceTest {
     assertThat(exitCarTicket.getAmount()).isEqualTo(4.8);
     assertThat(exitBicycleTicket.getAmount()).isEqualTo(1.2);
 
-  }
-
-  @Timeout(2)
-  @Test
-  void failIfMoreThan2Seconds() throws InterruptedException {
-    Thread.sleep(3 * 1000);
   }
 
 
