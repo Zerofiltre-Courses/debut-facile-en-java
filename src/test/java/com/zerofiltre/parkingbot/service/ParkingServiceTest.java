@@ -2,7 +2,6 @@ package com.zerofiltre.parkingbot.service;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatNoException;
 
 import com.zerofiltre.parkingbot.error.NoMoreSpotException;
 import com.zerofiltre.parkingbot.model.Bicycle;
@@ -75,18 +74,9 @@ public class ParkingServiceTest {
   }
 
   @Test
-  void givenSomeFreeSpotInParking_processIncomingVehicle_generatesATicket() {
-    parking.setFreeSpots(5);
-    assertThatNoException().isThrownBy(() -> parkingService.processIncomingVehicle(vehicle, parking));
-  }
-
-
-  @Test
   void givenAVehicle_processIncomingVehicle_generatesTicketWithRightTime() throws NoMoreSpotException {
     //given
     Date now = new Date();
-    parking.setFreeSpots(5);
-
 
     //when : Enregistrer le véhicule
     Ticket ticket = parkingService.processIncomingVehicle(vehicle, parking);
