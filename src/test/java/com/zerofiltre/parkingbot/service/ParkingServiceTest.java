@@ -1,9 +1,13 @@
 package com.zerofiltre.parkingbot.service;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatNoException;
 
+import com.zerofiltre.parkingbot.error.NoMoreSpotException;
 import com.zerofiltre.parkingbot.model.Bicycle;
 import com.zerofiltre.parkingbot.model.Car;
+import com.zerofiltre.parkingbot.model.Parking;
 import com.zerofiltre.parkingbot.model.Ticket;
 import com.zerofiltre.parkingbot.model.Vehicle;
 import java.util.Date;
@@ -26,6 +30,7 @@ public class ParkingServiceTest {
   private Vehicle vehicle;
   private Ticket ticket;
   private Date enteringTime;
+  private Parking parking;
 
 
   @BeforeAll
@@ -35,6 +40,10 @@ public class ParkingServiceTest {
     vehicle.setRegistrationNumber(REGISTRATION_NUMBER);
     ticket = new Ticket();
     ticket.setVehicle(vehicle);
+
+    //given a parking with some free spot
+    parking = new Parking();
+    parking.setFreeSpots(10);
 
   }
 
@@ -57,14 +66,30 @@ public class ParkingServiceTest {
 
   }
 
+  @Test
+  void givenNoFreeSpot_processIncomingVehicle_failsWithNoMoreSpotException() {
+    parking.setFreeSpots(0);
+    assertThatExceptionOfType(NoMoreSpotException.class)
+        .isThrownBy(() -> parkingService.processIncomingVehicle(vehicle, parking));
+
+  }
 
   @Test
-  void givenAVehicle_processIncomingVehicle_generatesTicketWithRightTime() {
+  void givenSomeFreeSpotInParking_processIncomingVehicle_generatesATicket() {
+    parking.setFreeSpots(5);
+    assertThatNoException().isThrownBy(() -> parkingService.processIncomingVehicle(vehicle, parking));
+  }
+
+
+  @Test
+  void givenAVehicle_processIncomingVehicle_generatesTicketWithRightTime() throws NoMoreSpotException {
     //given
     Date now = new Date();
+    parking.setFreeSpots(5);
+
 
     //when : Enregistrer le véhicule
-    Ticket ticket = parkingService.processIncomingVehicle(vehicle);
+    Ticket ticket = parkingService.processIncomingVehicle(vehicle, parking);
 
     //then:
     //génère un ticket,

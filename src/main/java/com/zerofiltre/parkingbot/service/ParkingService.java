@@ -3,6 +3,8 @@ package com.zerofiltre.parkingbot.service;
 import static com.zerofiltre.parkingbot.model.VehiculeCategoryEnum.BICYCLE;
 import static com.zerofiltre.parkingbot.model.VehiculeCategoryEnum.CITADINE;
 
+import com.zerofiltre.parkingbot.error.NoMoreSpotException;
+import com.zerofiltre.parkingbot.model.Parking;
 import com.zerofiltre.parkingbot.model.Ticket;
 import com.zerofiltre.parkingbot.model.Vehicle;
 import com.zerofiltre.parkingbot.model.VehiculeCategoryEnum;
@@ -10,11 +12,14 @@ import java.util.Date;
 
 public class ParkingService {
 
-  public Ticket processIncomingVehicle(Vehicle vehicle) {
-    Ticket ticket = new Ticket();
-    ticket.setVehicle(vehicle);
-    ticket.setEnteringTime(new Date());
-    return ticket;
+  public Ticket processIncomingVehicle(Vehicle vehicle, Parking parking) throws NoMoreSpotException {
+    if(parking.getFreeSpots()>0) {
+      Ticket ticket = new Ticket();
+      ticket.setVehicle(vehicle);
+      ticket.setEnteringTime(new Date());
+      return ticket;
+    }
+    throw new NoMoreSpotException();
   }
 
   public Ticket processExitingVehicle(Ticket ticket) {
