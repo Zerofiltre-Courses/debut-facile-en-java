@@ -3,6 +3,9 @@ package com.zerofiltre.parkingbot.service;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatNoException;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import com.zerofiltre.parkingbot.error.NoMoreSpotException;
 import com.zerofiltre.parkingbot.model.Bicycle;
@@ -11,10 +14,9 @@ import com.zerofiltre.parkingbot.model.Parking;
 import com.zerofiltre.parkingbot.model.Ticket;
 import com.zerofiltre.parkingbot.model.Vehicle;
 import java.util.Date;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
@@ -26,11 +28,14 @@ public class ParkingServiceTest {
   public static final String CAR_REGISTRATION_NUMBER = "AZ-JOL-59";
   public static final String BICYCLE_REGISTRATION_NUMBER = "AZ-JOP-89";
 
-  ParkingService parkingService = new ParkingService();
+  ParkingService parkingService;
   private Vehicle vehicle;
   private Ticket ticket;
   private Date enteringTime;
   private Parking parking;
+
+  SpotService spotService;
+  PriceService priceService;
 
 
   @BeforeAll
@@ -43,7 +48,10 @@ public class ParkingServiceTest {
 
     //given a parking with some free spot
     parking = new Parking();
-    parking.setFreeSpots(10);
+    spotService = mock(SpotService.class);
+    priceService = mock(PriceService.class);
+    parkingService = new ParkingService(spotService, priceService);
+    when(priceService.getExitPrice(any())).thenReturn(12.0);
 
   }
 
@@ -55,20 +63,10 @@ public class ParkingServiceTest {
     ticket.setEnteringTime(enteringTime);
   }
 
-  @AfterEach
-  void afterEach() {
-    System.out.println("Je m'affiche après chaque test");
-  }
-
-  @AfterAll
-  void afterAll() {
-    System.out.println("Je m'affiche après tous les tests");
-
-  }
 
   @Test
   void givenNoFreeSpot_processIncomingVehicle_failsWithNoMoreSpotException() {
-    parking.setFreeSpots(0);
+    when(spotService.spotsAvailable(parking)).thenReturn(false);
     assertThatExceptionOfType(NoMoreSpotException.class)
         .isThrownBy(() -> parkingService.processIncomingVehicle(vehicle, parking));
 
@@ -76,7 +74,7 @@ public class ParkingServiceTest {
 
   @Test
   void givenSomeFreeSpotInParking_processIncomingVehicle_generatesATicket() {
-    parking.setFreeSpots(5);
+    when(spotService.spotsAvailable(parking)).thenReturn(true);
     assertThatNoException().isThrownBy(() -> parkingService.processIncomingVehicle(vehicle, parking));
   }
 
@@ -85,8 +83,7 @@ public class ParkingServiceTest {
   void givenAVehicle_processIncomingVehicle_generatesTicketWithRightTime() throws NoMoreSpotException {
     //given
     Date now = new Date();
-    parking.setFreeSpots(5);
-
+    when(spotService.spotsAvailable(parking)).thenReturn(true);
 
     //when : Enregistrer le véhicule
     Ticket ticket = parkingService.processIncomingVehicle(vehicle, parking);
@@ -139,6 +136,7 @@ public class ParkingServiceTest {
   //0.05 € /min pour un type inconnu (choix par défaut)
 
   @Test
+  @Disabled("Move to another test class")
   void givenARegisteredVehicle_processExitingVehicle_generatesTheRightPrice() {
     //given
     Vehicle car = new Car();
