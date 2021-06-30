@@ -4,7 +4,9 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatNoException;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import com.zerofiltre.parkingbot.error.NoMoreSpotException;
@@ -48,10 +50,10 @@ public class ParkingServiceTest {
 
     //given a parking with some free spot
     parking = new Parking();
-    spotService = mock(SpotService.class);
-    priceService = mock(PriceService.class);
+    spotService = spy(SpotService.class);
+    priceService = spy(PriceService.class);
     parkingService = new ParkingService(spotService, priceService);
-    when(priceService.getExitPrice(any())).thenReturn(12.0);
+    doReturn(12.0).when(priceService).getExitPrice(any());
 
   }
 
@@ -136,8 +138,9 @@ public class ParkingServiceTest {
   //0.05 € /min pour un type inconnu (choix par défaut)
 
   @Test
-  @Disabled("Move to another test class")
+  //@Disabled("Move to another test class")
   void givenARegisteredVehicle_processExitingVehicle_generatesTheRightPrice() {
+
     //given
     Vehicle car = new Car();
     car.setRegistrationNumber(CAR_REGISTRATION_NUMBER);
@@ -154,6 +157,7 @@ public class ParkingServiceTest {
     ticket.setEnteringTime(enteringTime);
     carTicket.setEnteringTime(enteringTime);
     bicycleTicket.setEnteringTime(enteringTime);
+    when(priceService.getExitPrice(any())).thenCallRealMethod();
 
     //when
     Ticket exitVehicleTicket = parkingService.processExitingVehicle(ticket);
